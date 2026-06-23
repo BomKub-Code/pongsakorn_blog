@@ -164,21 +164,48 @@ const ArticleCard = ({ article }) => {
 const LatestArticles = () => {
   return (
     <section className="mb-20">
-      <h2 className="text-3xl font-extrabold text-gray-900 mb-8 tracking-tight">Latest articles</h2>
+      <div className="flex items-center gap-3 mb-8">
+        <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">Latest articles</h2>
+        {/* จุดสีเทาตามภาพอ้างอิง (เพิ่มให้ดูคล้ายภาพตัวอย่างมากขึ้น) */}
+        <div className="w-5 h-5 bg-gray-400 rounded-full"></div>
+      </div>
       
       {/* Filter and Search Bar */}
-      <div className="flex flex-col md:flex-row justify-between items-center bg-[#f4f4f4] p-2 rounded-2xl mb-10 gap-4">
-        <div className="flex gap-2 w-full md:w-auto overflow-x-auto no-scrollbar">
+      <div className="flex flex-col md:flex-row justify-between items-center bg-[#f4f4f4] p-3 rounded-2xl mb-10 gap-3">
+        
+        {/* Desktop View: Buttons (แสดงเฉพาะหน้าจอ md ขึ้นไป) */}
+        <div className="hidden md:flex gap-2 w-full md:w-auto overflow-x-auto no-scrollbar">
           <button className="px-5 py-2.5 bg-[#e0e0e0] text-gray-900 rounded-xl text-sm font-semibold whitespace-nowrap transition-colors">Highlight</button>
           <button className="px-5 py-2.5 text-gray-500 hover:bg-[#e8e8e8] hover:text-gray-900 rounded-xl text-sm font-medium whitespace-nowrap transition-colors">Cat</button>
           <button className="px-5 py-2.5 text-gray-500 hover:bg-[#e8e8e8] hover:text-gray-900 rounded-xl text-sm font-medium whitespace-nowrap transition-colors">Inspiration</button>
           <button className="px-5 py-2.5 text-gray-500 hover:bg-[#e8e8e8] hover:text-gray-900 rounded-xl text-sm font-medium whitespace-nowrap transition-colors">General</button>
         </div>
+
+        {/* Mobile View: Dropdown (แสดงเฉพาะหน้าจอมือถือ) */}
+        <div className="w-full md:hidden relative">
+          <select 
+            className="w-full appearance-none bg-white border border-gray-200 text-gray-700 py-3 px-4 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-gray-200 shadow-sm cursor-pointer"
+            defaultValue="highlight"
+          >
+            <option value="highlight">Highlight</option>
+            <option value="cat">Cat</option>
+            <option value="inspiration">Inspiration</option>
+            <option value="general">General</option>
+          </select>
+          {/* Custom Dropdown Arrow Icon */}
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
+            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+            </svg>
+          </div>
+        </div>
+
+        {/* Search Input */}
         <div className="w-full md:w-auto relative">
           <input 
             type="text" 
             placeholder="Search" 
-            className="w-full md:w-72 pl-4 pr-10 py-2.5 rounded-xl border-none text-sm text-gray-700 bg-white focus:ring-2 focus:ring-gray-200 outline-none shadow-sm"
+            className="w-full md:w-72 pl-4 pr-10 py-3 md:py-2.5 rounded-xl border-none text-sm text-gray-700 bg-white focus:ring-2 focus:ring-gray-200 outline-none shadow-sm"
           />
           <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
