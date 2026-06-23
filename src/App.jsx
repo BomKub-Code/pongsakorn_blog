@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // ==========================================
 // Mock Data สำหรับบทความ
@@ -64,19 +64,60 @@ const mockArticles = [
 // 1. Component NavBar
 // ==========================================
 const NavBar = () => {
+  // State สำหรับควบคุมการเปิด/ปิดเมนูบนมือถือ
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
-    <nav className="flex justify-between items-center px-8 py-4 border border-gray-200 rounded-2xl mb-6 bg-white">
-      <div className="font-extrabold text-2xl text-gray-800 tracking-tighter">
-        hh.
+    <nav className="px-8 py-4 border border-gray-200 rounded-2xl mb-6 bg-white transition-all duration-300">
+      <div className="flex justify-between items-center">
+        {/* Logo */}
+        <div className="font-extrabold text-2xl text-gray-800 tracking-tighter">
+          hh.
+        </div>
+
+        {/* Desktop Menu (ซ่อนบนมือถือ, แสดงบนจอ md ขึ้นไป) */}
+        <div className="hidden md:flex gap-4">
+          <button className="px-6 py-2.5 bg-transparent border border-gray-300 rounded-full cursor-pointer font-medium text-sm hover:bg-gray-50 transition-colors">
+            Log in
+          </button>
+          <button className="px-6 py-2.5 bg-[#1a1a1a] text-white rounded-full cursor-pointer font-medium text-sm hover:bg-black transition-colors">
+            Sign up
+          </button>
+        </div>
+
+        {/* Hamburger Icon (แสดงบนมือถือ, ซ่อนบนจอ md ขึ้นไป) */}
+        <div className="md:hidden flex items-center">
+          <button 
+            onClick={() => setIsMenuOpen(!isMenuOpen)} 
+            className="text-gray-800 focus:outline-none"
+            aria-label="Toggle menu"
+          >
+            {isMenuOpen ? (
+              // ไอคอน Close (กากบาท)
+              <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            ) : (
+              // ไอคอน Hamburger (3 ขีด)
+              <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
+              </svg>
+            )}
+          </button>
+        </div>
       </div>
-      <div className="flex gap-4">
-        <button className="px-6 py-2.5 bg-transparent border border-gray-300 rounded-full cursor-pointer font-medium text-sm hover:bg-gray-50 transition-colors">
-          Log in
-        </button>
-        <button className="px-6 py-2.5 bg-[#1a1a1a] text-white rounded-full cursor-pointer font-medium text-sm hover:bg-black transition-colors">
-          Sign up
-        </button>
-      </div>
+
+      {/* Mobile Menu Dropdown (แสดงเมื่อกด Hamburger) */}
+      {isMenuOpen && (
+        <div className="md:hidden mt-5 pt-5 border-t border-gray-100 flex flex-col gap-3">
+          <button className="w-full px-6 py-2.5 bg-transparent border border-gray-300 rounded-full cursor-pointer font-medium text-sm hover:bg-gray-50 transition-colors">
+            Log in
+          </button>
+          <button className="w-full px-6 py-2.5 bg-[#1a1a1a] text-white rounded-full cursor-pointer font-medium text-sm hover:bg-black transition-colors">
+            Sign up
+          </button>
+        </div>
+      )}
     </nav>
   );
 };
@@ -87,9 +128,9 @@ const NavBar = () => {
 const HeroSection = () => {
   return (
     <main className="flex flex-col md:flex-row justify-between items-center gap-10 p-10 border border-gray-200 rounded-[2rem] bg-white mb-16">
-      <div className="flex-1 text-right flex flex-col items-end">
+      <div className="flex-1 text-center md:text-right flex flex-col items-center md:items-end w-full">
         <h1 className="text-4xl lg:text-5xl font-extrabold leading-[1.1] text-gray-900 mb-6 tracking-tight">
-          Stay<br />Informed,<br />Stay Inspired
+          Stay<br className="hidden md:block" />Informed,<br className="hidden md:block" />Stay Inspired
         </h1>
         <p className="text-sm text-gray-500 leading-relaxed max-w-[280px]">
           Discover a World of Knowledge at Your Fingertips. Your Daily Dose of Inspiration and Information.
@@ -104,7 +145,7 @@ const HeroSection = () => {
         />
       </div>
 
-      <div className="flex-1 text-left flex flex-col justify-center">
+      <div className="flex-1 text-center md:text-left flex flex-col justify-center items-center md:items-start w-full">
         <span className="text-[11px] text-gray-400 font-medium tracking-wider uppercase mb-2 block">-Author</span>
         <h3 className="text-xl font-bold text-gray-900 mb-4">Thompson P.</h3>
         <div className="text-sm text-gray-500 leading-relaxed space-y-4 max-w-[300px]">
@@ -166,8 +207,8 @@ const LatestArticles = () => {
     <section className="mb-20">
       <div className="flex items-center gap-3 mb-8">
         <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">Latest articles</h2>
-        {/* จุดสีเทาตามภาพอ้างอิง (เพิ่มให้ดูคล้ายภาพตัวอย่างมากขึ้น) */}
-        <div className="w-5 h-5 bg-gray-400 rounded-full"></div>
+        {/* จุดสีเทาตามภาพอ้างอิง */}
+        <div className="w-5 h-5 bg-gray-400 rounded-full hidden md:block"></div>
       </div>
       
       {/* Filter and Search Bar */}
@@ -187,7 +228,7 @@ const LatestArticles = () => {
             className="w-full appearance-none bg-white border border-gray-200 text-gray-700 py-3 px-4 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-gray-200 shadow-sm cursor-pointer"
             defaultValue="highlight"
           >
-            <option value="highlight">Highlight</option>
+            <option value="highlight">Green Living</option>
             <option value="cat">Cat</option>
             <option value="inspiration">Inspiration</option>
             <option value="general">General</option>
@@ -238,8 +279,8 @@ const LatestArticles = () => {
 // ==========================================
 const Footer = () => {
   return (
-    <footer className="bg-[#f4f4f4] py-8 px-10 rounded-[2rem] flex flex-col md:flex-row justify-between items-center text-sm font-semibold text-gray-600">
-      <div className="flex flex-col md:flex-row items-center gap-6 mb-6 md:mb-0">
+    <footer className="bg-[#f4f4f4] py-8 px-10 rounded-[2rem] flex flex-col md:flex-row justify-between items-center text-sm font-semibold text-gray-600 gap-6 md:gap-0">
+      <div className="flex flex-col md:flex-row items-center gap-6">
         <span>Get in touch</span>
         {/* Social Icons */}
         <div className="flex gap-3">
@@ -266,8 +307,8 @@ const Footer = () => {
 // ==========================================
 export default function App() {
   return (
-    <div className="bg-[#fcfcfc] min-h-screen py-10 text-gray-900 font-sans">
-      <div className="max-w-[1100px] mx-auto px-6">
+    <div className="bg-[#fcfcfc] min-h-screen py-6 md:py-10 text-gray-900 font-sans">
+      <div className="max-w-[1100px] mx-auto px-4 md:px-6">
         <NavBar />
         <HeroSection />
         <LatestArticles />
